@@ -27,10 +27,23 @@ public class MainActivity extends AppCompatActivity {
                 openLoginActivity();
             }
         });
+
+        registerbutton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                openRegistrationActivity();
+            }
+        });
     }
 
     private void openLoginActivity(){
         Intent intent=new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void openRegistrationActivity(){
+        Intent intent=new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 }
