@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,6 +19,7 @@ import com.himanshusampath.assignmentsubmission.databinding.ActivitySampathBindi
 public class Sampath extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
+//    EditText
     private ActivitySampathBinding binding;
 
     @Override
