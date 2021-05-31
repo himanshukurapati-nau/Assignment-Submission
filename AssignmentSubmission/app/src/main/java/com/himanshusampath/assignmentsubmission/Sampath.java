@@ -18,8 +18,7 @@ import com.himanshusampath.assignmentsubmission.databinding.ActivitySampathBindi
 
 public class Sampath extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
-//    EditText
+    private AppBarConfiguration appBarConfiguration;  //Sampath Topper
     private ActivitySampathBinding binding;
 
     @Override
