@@ -1,4 +1,4 @@
-package com.himanshusampath.assignmentsubmission;
+package com.himanshusampath.assignmentcreationfaculty;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,17 +30,11 @@ public class LoginActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
 
     EditText emailInput, passwordInput;
-    Button loginButton;
-    ProgressBar progressBar;
-    ConstraintLayout loginUI;
+    String emailString, passwordString, forgotemailString;
+    Button loginButton, submitButton, loginAgainButton;
     TextView forgotPassword;
-
-    String emailString, passwordString;
-
-    private ConstraintLayout emailui, emailsentui;
-    String forgotemailString;
-    private EditText forgotemailinput;
-    private Button forgotSubmitbutton, loginAgainButton;
+    EditText forgotemailInput;
+    ConstraintLayout loginUI, loadingUI, emailUI, emailsentUI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,31 +42,42 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailInput = findViewById(R.id.emailinput);
-        passwordInput = findViewById(R.id.passwordinput);
-        loginButton = findViewById(R.id.loginbutton);
-        progressBar = findViewById(R.id.progressBar);
-        loginUI = findViewById(R.id.loginui);
-        forgotPassword = findViewById(R.id.forgotpassword);
-
-        emailui = findViewById(R.id.emailUI);
-        emailsentui = findViewById(R.id.emailsentUI);
-        forgotemailinput = findViewById(R.id.forgotemailInput);
-        forgotSubmitbutton = findViewById(R.id.submitbutton);
-        loginAgainButton = findViewById(R.id.loginAgain);
-
+        setReference();
         mAuth = FirebaseAuth.getInstance();
 
+        setButtonsOnClick();
+
+    }
+
+    //Sets reference to all elements
+    private void setReference()
+    {
+        emailInput = findViewById(R.id.emailinput);
+        passwordInput = findViewById(R.id.passwordinput);
+
+        loginButton = findViewById(R.id.loginbutton);
+        forgotPassword = findViewById(R.id.forgotpasswordbutton);
+        forgotemailInput = findViewById(R.id.forgotemailInput);
+        submitButton = findViewById(R.id.submitbutton);
+        loginAgainButton = findViewById(R.id.loginAgain);
+
+        loginUI = findViewById(R.id.loginui);
+        loadingUI = findViewById(R.id.loadingui);
+        emailUI = findViewById(R.id.emailui);
+        emailsentUI = findViewById(R.id.emailsentui);
+    }
+
+    //Sets onClickListener to all buttons
+    private void setButtonsOnClick()
+    {
         loginButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
-                loginUI.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.VISIBLE);
                 emailString = emailInput.getText().toString();
                 passwordString = passwordInput.getText().toString();
+
                 emailValidationlogin();
             }
         });
@@ -87,12 +91,12 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
-        forgotSubmitbutton.setOnClickListener(new View.OnClickListener()
+        submitButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                forgotemailString = forgotemailinput.getText().toString();
+                forgotemailString = forgotemailInput.getText().toString();
                 emailValidation();
             }
         });
@@ -102,32 +106,13 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                emailsentui.setVisibility(View.INVISIBLE);
+                emailsentUI.setVisibility(View.INVISIBLE);
                 loginUI.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    private void emailValidationlogin()
-    {
-        if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString).matches())
-        {
-            Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        checkEmailExistsOrNot();
-    }
-
-    private void emailValidation()
-    {
-        if (forgotemailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(forgotemailString).matches())
-        {
-            Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        forgotcheckEmailExistsOrNot();
-    }
-
+    //Checks if user exists with that email
     void checkEmailExistsOrNot()
     {
         mAuth.fetchSignInMethodsForEmail(emailString).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>()
@@ -157,6 +142,59 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    //Login email validation
+    private void emailValidationlogin()
+    {
+        if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString).matches())
+        {
+            Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        loginUI.setVisibility(View.INVISIBLE);
+        loadingUI.setVisibility(View.VISIBLE);
+        checkEmailExistsOrNot();
+    }
+
+    //Firebase Login
+    private void firebaseLogin()
+    {
+        mAuth.signInWithEmailAndPassword(emailString, passwordString)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            openFirstActivity();
+                        } else
+                        {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            loginUI.setVisibility(View.VISIBLE);
+                            loadingUI.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+    }
+
+    //checks if email is valid or not forgot password
+    private void emailValidation()
+    {
+        if (forgotemailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(forgotemailString).matches())
+        {
+            Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        forgotcheckEmailExistsOrNot();
+    }
+
+    //check if email is valid or not in forgot password UI
     private void forgotcheckEmailExistsOrNot()
     {
         mAuth.fetchSignInMethodsForEmail(forgotemailString).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>()
@@ -187,33 +225,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    private void firebaseLogin()
-    {
-        mAuth.signInWithEmailAndPassword(emailString, passwordString)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
-                    {
-                        if (task.isSuccessful())
-                        {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            openFirstActivity();
-                        } else
-                        {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            loginUI.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-    }
-
+    //Firebase Forgot Password
     private void firebaseForgotPassword()
     {
         FirebaseAuth.getInstance().sendPasswordResetEmail(forgotemailString)
@@ -230,21 +242,23 @@ public class LoginActivity extends AppCompatActivity
                 });
     }
 
+    //Opens ForgotPassword UI
+    private void openForgotPassword()
+    {
+        loginUI.setVisibility(View.INVISIBLE);
+        emailUI.setVisibility(View.VISIBLE);
+    }
+
+    //Opens Email sent UI
+    private void openEmailSent()
+    {
+        emailUI.setVisibility(View.INVISIBLE);
+        emailsentUI.setVisibility(View.VISIBLE);
+    }
+
     private void openFirstActivity()
     {
         Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
-    }
-
-    private void openForgotPassword()
-    {
-        loginUI.setVisibility(View.INVISIBLE);
-        emailui.setVisibility(View.VISIBLE);
-    }
-
-    private void openEmailSent()
-    {
-        emailui.setVisibility(View.INVISIBLE);
-        emailsentui.setVisibility(View.VISIBLE);
     }
 }

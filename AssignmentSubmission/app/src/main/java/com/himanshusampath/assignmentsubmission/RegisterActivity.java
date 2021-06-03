@@ -1,8 +1,5 @@
 package com.himanshusampath.assignmentsubmission;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +30,8 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+{
 
     private Spinner branchDropdown;
 
@@ -42,94 +43,103 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Variables
     String emailtostring, rollnumber, password, nameString, branchString;
-    static String[] items = new String[]{"CSE", "IT", "ECE","EEE","Mechanical"};
+    static String[] items = new String[]{"CSE", "IT", "ECE", "EEE", "Mechanical"};
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mAuth=FirebaseAuth.getInstance();
-        db=FirebaseFirestore.getInstance();
-        branchDropdown=findViewById(R.id.branchdrop);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        branchDropdown = findViewById(R.id.branchdrop);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         branchDropdown.setAdapter(adapter);
 
-        nameInput=findViewById(R.id.nameinput);
-        emailInput=findViewById(R.id.emailinput);
-        rollnumberInput=findViewById(R.id.rollnumberinput);
-        passwordInput=findViewById(R.id.password);
-        confirmpasswordInput =findViewById(R.id.confirmpassword);
-        submitButton=findViewById(R.id.submitbutton);
+        nameInput = findViewById(R.id.nameinput);
+        emailInput = findViewById(R.id.emailinput);
+        rollnumberInput = findViewById(R.id.rollnumberinput);
+        passwordInput = findViewById(R.id.password);
+        confirmpasswordInput = findViewById(R.id.confirmpassword);
+        submitButton = findViewById(R.id.submitbutton);
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 validateForm();
             }
         });
     }
 
-    private void validateForm(){
+    private void validateForm()
+    {
 
         //Check name is not null
-        nameString=nameInput.getText().toString();
-        if(nameString.isEmpty())
+        nameString = nameInput.getText().toString();
+        if (nameString.isEmpty())
         {
             Toast.makeText(this, "Enter your name", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        emailtostring=emailInput.getText().toString();
+        emailtostring = emailInput.getText().toString();
         //check email format
-        if(emailtostring.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailtostring).matches())
+        if (emailtostring.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailtostring).matches())
         {
             Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
             return;
         }
 
         //Check roll number is not null
-        rollnumber=rollnumberInput.getText().toString();
-        if(rollnumber.isEmpty() && rollnumber.length()!=10)
+        rollnumber = rollnumberInput.getText().toString();
+        if (rollnumber.isEmpty() && rollnumber.length() != 10)
         {
             Toast.makeText(this, "Enter your Roll Number", Toast.LENGTH_SHORT).show();
             return;
         }
 
         //check password Validation
-        password=passwordInput.getText().toString();
-        if(password.length()<6)
+        password = passwordInput.getText().toString();
+        if (password.length() < 6)
         {
-            Toast.makeText(this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Enter password with atleast 6 characters", Toast.LENGTH_SHORT).show();
             return;
         }
 
         //Check password matches confirm password
-        String confirmpassword=confirmpasswordInput.getText().toString();
-        if(!confirmpassword.equals(password))
+        String confirmpassword = confirmpasswordInput.getText().toString();
+        if (!confirmpassword.equals(password))
         {
             Toast.makeText(this, "Passwords did not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        branchString=branchDropdown.getSelectedItem().toString();
+        branchString = branchDropdown.getSelectedItem().toString();
 
-        Toast.makeText(this,"Validation Successfull!!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Validation Successfull!!", Toast.LENGTH_SHORT).show();
         checkEmailExistsOrNot();
     }
 
-    private void firebaseSignin(){
+    private void firebaseSignin()
+    {
         mAuth.createUserWithEmailAndPassword(emailtostring, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 //                            updateUI(user);
                             uploadUserData();
-                        } else {
+                        } else
+                        {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
@@ -140,54 +150,67 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    void checkEmailExistsOrNot(){
-        mAuth.fetchSignInMethodsForEmail(emailtostring).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+    void checkEmailExistsOrNot()
+    {
+        mAuth.fetchSignInMethodsForEmail(emailtostring).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>()
+        {
             @Override
-            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                Log.d(TAG,""+task.getResult().getSignInMethods().size());
-                if (task.getResult().getSignInMethods().size() == 0){
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task)
+            {
+                Log.d(TAG, "" + task.getResult().getSignInMethods().size());
+                if (task.getResult().getSignInMethods().size() == 0)
+                {
                     // email not existed
                     firebaseSignin();
-                }else {
+                } else
+                {
                     // email existed
                     Toast.makeText(RegisterActivity.this, "Account Already Exist", Toast.LENGTH_SHORT).show();
                 }
 
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener()
+        {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(@NonNull Exception e)
+            {
                 e.printStackTrace();
             }
         });
     }
 
-    private void uploadUserData(){
+    private void uploadUserData()
+    {
         //Uploads user information to Firestore
 
-        Map<String, Object> student=new HashMap<>();
-        student.put("Name",nameString);
-        student.put("Roll Number",rollnumber);
+        Map<String, Object> student = new HashMap<>();
+        student.put("Name", nameString);
+        student.put("Roll Number", rollnumber);
         student.put("Branch", branchString);
 
         db.collection("student")
                 .add(student)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>(){
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>()
+                {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(DocumentReference documentReference)
+                    {
                         Toast.makeText(RegisterActivity.this, "Information Stored Successfully!!", Toast.LENGTH_SHORT).show();
                         openFirstActivity();
                     }
-                }).addOnFailureListener(new OnFailureListener(){
+                }).addOnFailureListener(new OnFailureListener()
+        {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(@NonNull Exception e)
+            {
                 Toast.makeText(RegisterActivity.this, "Information Storing Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void openFirstActivity(){
-        Intent intent=new Intent(this, FirstActivity.class);
+    public void openFirstActivity()
+    {
+        Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
     }
 }
