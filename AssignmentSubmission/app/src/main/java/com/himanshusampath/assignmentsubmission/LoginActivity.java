@@ -232,7 +232,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void openFirstActivity()
     {
-        Intent intent = new Intent(this, FirstActivity.class);
+        Intent intent = new Intent(this, PendingSubmission.class);
         startActivity(intent);
     }
 

@@ -210,7 +210,7 @@ public class RegisterActivity extends AppCompatActivity
 
     public void openFirstActivity()
     {
-        Intent intent = new Intent(this, FirstActivity.class);
+        Intent intent = new Intent(this, PendingSubmission.class);
         startActivity(intent);
     }
 }
