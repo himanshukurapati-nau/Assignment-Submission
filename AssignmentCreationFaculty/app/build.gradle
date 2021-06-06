@@ -45,4 +45,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
