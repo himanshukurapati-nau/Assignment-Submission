@@ -38,13 +38,14 @@ public class RegisterActivity extends AppCompatActivity
     private EditText nameInput, emailInput, rollnumberInput, passwordInput, confirmpasswordInput;
     private Button submitButton;
 
+    private FirebaseUser firebase;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     //Variables
     String emailtostring, rollnumber, password, nameString, branchString;
     static String[] items = new String[]{"CSE", "IT", "ECE", "EEE", "Mechanical"};
-
+    private String firebaseUid=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -137,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 //                            updateUI(user);
+                            firebaseUid= user.getUid();
                             uploadUserData();
                         } else
                         {
@@ -182,30 +184,27 @@ public class RegisterActivity extends AppCompatActivity
     private void uploadUserData()
     {
         //Uploads user information to Firestore
-
         Map<String, Object> student = new HashMap<>();
-        student.put("Name", nameString);
-        student.put("Roll Number", rollnumber);
-        student.put("Branch", branchString);
+        student.put("name", nameString);
+        student.put("rollnumber", rollnumber);
+        student.put("branch", branchString);
 
         db.collection("student")
-                .add(student)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>()
-                {
+                .document(firebaseUid)
+                .set(student)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference)
-                    {
+                    public void onSuccess(Void aVoid) {
                         Toast.makeText(RegisterActivity.this, "Information Stored Successfully!!", Toast.LENGTH_SHORT).show();
                         openFirstActivity();
                     }
-                }).addOnFailureListener(new OnFailureListener()
-        {
-            @Override
-            public void onFailure(@NonNull Exception e)
-            {
-                Toast.makeText(RegisterActivity.this, "Information Storing Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RegisterActivity.this, "Information Storing Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void openFirstActivity()

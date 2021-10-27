@@ -12,11 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AssignmentCreationFaculty">
-        <activity android:name=".NewAssignmentCreation"></activity>
+        <activity
+            android:name=".SubmittedAssignments"
+            android:exported="false" />
+        <activity android:name=".NewAssignmentCreation" />
         <activity android:name=".AssignmentsPending" />
         <activity android:name=".FirstActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".PDFViewerActivity"
+            android:exported="false" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

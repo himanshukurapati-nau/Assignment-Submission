@@ -1,4 +1,4 @@
-package com.himanshusampath.assignmentsubmission;
+package com.himanshusampath.assignmentcreationfaculty;
 
 public class model
 {

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".PendingSubmission"
-    android:background="#C9FFEF"
+    tools:context=".SubmittedAssignments"
+    android:background="#009569"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,29 +22,26 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:padding="15dp"
                 android:src="@drawable/backicon" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="15dp"
-                android:src="@drawable/menubutton" />
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submitted Assignments"
+                android:textSize="25sp"
+                android:textAllCaps="true"
+                android:padding="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pending Submissions"
-            android:textSize="30sp"
-            android:textAllCaps="true"
-            android:padding="10dp"/>
+        </RelativeLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recview"

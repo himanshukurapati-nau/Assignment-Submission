@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
     public void openFirstActivity()
     {
-        Intent intent = new Intent(this, NewAssignmentCreation.class);
+        Intent intent = new Intent(this, AssignmentsPending.class);
         startActivity(intent);
     }
 

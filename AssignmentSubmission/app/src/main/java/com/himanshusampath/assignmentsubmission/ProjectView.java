@@ -1,4 +1,12 @@
-package com.himanshusampath.assignmentcreationfaculty;
+package com.himanshusampath.assignmentsubmission;
+
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -10,95 +18,85 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class NewAssignmentCreation extends AppCompatActivity
+public class ProjectView extends AppCompatActivity
 {
+    TextView assignmentName;
+    TextView subjectName;
+    TextView endDate;
+    TextView fileName;
+    Button pdfButton;
+    Button selectPdfButton;
+    Button submitButton;
+    String pdfUri;
+    String uuid;
+    String branch;
+    String studentName;
+    String rollNumber;
 
-    static String[] items = new String[]{"CSE", "IT", "ECE", "EEE", "Mechanical"};
     private static final int STORAGE_PERMISSION_CODE = 101;
-
-    private Spinner branchDropdown;
-    Button selectPDFButton;
-    TextView fileNameTextView, submitButton;
-    EditText subjectName, assignmentName, endDate;
-    ImageView backButton;
-
     StorageReference storageReference;
     FirebaseFirestore db;
-    FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_assignment_creation);
-
-        //sets options in branch drop down
-        setBranchDropdown();
-        Log.v("Astro", "!!!!!!!! Activity Start !!!!!");
+        setContentView(R.layout.activity_project_view);
         storageReference = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        setUIReference();
+        AssignElements();
     }
 
-    private void setUIReference()
+    private void AssignElements()
     {
-        selectPDFButton = findViewById(R.id.selectpdfbutton);
-        fileNameTextView = findViewById(R.id.filename);
-        submitButton = findViewById(R.id.submitbutton);
-        subjectName = findViewById(R.id.subjectinput);
-        assignmentName = findViewById(R.id.assignmentname);
-        endDate = findViewById(R.id.enddateinput);
-        backButton = findViewById(R.id.backbutton);
+        //Assigns UI elements
+        assignmentName=findViewById(R.id.assignmentname);
+        subjectName=findViewById(R.id.subjectname);
+        endDate=findViewById(R.id.enddate);
+        pdfButton=findViewById(R.id.pdfbutton);
+        fileName=findViewById(R.id.filename);
+        selectPdfButton=findViewById(R.id.answerspdfbutton);
+        submitButton=findViewById(R.id.submitbutton);
 
-
-        setActionListeners();
-    }
-
-    private void setBranchDropdown()
-    {
-        branchDropdown = findViewById(R.id.branchinput);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        branchDropdown.setAdapter(adapter);
-    }
-
-    private void setActionListeners()
-    {
-        selectPDFButton.setOnClickListener(new View.OnClickListener()
+        pdfButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DisplayPDF();
+            }
+        });
+        SetText();
+        selectPdfButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -106,15 +104,32 @@ public class NewAssignmentCreation extends AppCompatActivity
                 selectPDF();
             }
         });
+    }
 
-        backButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                userSignout();
-            }
-        });
+    private void SetText()
+    {
+        Intent intent = getIntent();
+        String assignmentname = intent.getStringExtra("assignmentName");
+        String subjectname = intent.getStringExtra("subjectName");
+        String enddate = intent.getStringExtra("endDate");
+        pdfUri=intent.getStringExtra("uri");
+        uuid=intent.getStringExtra("uuid");
+        branch=intent.getStringExtra("branch");
+        studentName=intent.getStringExtra("name");
+        rollNumber=intent.getStringExtra("rollnumber");
+        Log.d("Astro","Student Name Received: "+studentName);
+        Log.d("Astro","Roll Number Received: "+rollNumber);
+
+        assignmentName.setText(assignmentname);
+        subjectName.setText(subjectname);
+        endDate.setText(enddate);
+    }
+
+    private void DisplayPDF()
+    {
+        Intent intent=new Intent(this,PDFViewerActivity.class);
+        intent.putExtra("pdfurl",pdfUri);
+        startActivity(intent);
     }
 
     private void selectPDF()
@@ -124,7 +139,7 @@ public class NewAssignmentCreation extends AppCompatActivity
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(NewAssignmentCreation.this,
+            ActivityCompat.requestPermissions(ProjectView.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         } else
         {
@@ -134,7 +149,6 @@ public class NewAssignmentCreation extends AppCompatActivity
             startActivityForResult(intent.createChooser(intent, "PDF FILE SELECT"), 12);
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
@@ -185,7 +199,7 @@ public class NewAssignmentCreation extends AppCompatActivity
             {
                 displayName = myFile.getName();
             }
-            fileNameTextView.setText(displayName);
+            fileName.setText(displayName);
 
             submitButton.setOnClickListener(new View.OnClickListener()
             {
@@ -218,20 +232,20 @@ public class NewAssignmentCreation extends AppCompatActivity
                         while (!uriTask.isComplete()) ;
                         Uri uri = uriTask.getResult();
 
-                        String branch = branchDropdown.getSelectedItem().toString();
                         String subjectname = subjectName.getText().toString();
                         String assignmentname = assignmentName.getText().toString();
-                        String enddate = endDate.getText().toString();
                         Map<String, Object> assignment = new HashMap<>();
-                        assignment.put("subjectname", subjectname);
-                        assignment.put("assignmentname", assignmentname);
-                        assignment.put("branch", branch);
-                        assignment.put("enddate", enddate);
+                        assignment.put("studentname", studentName);
+                        assignment.put("rollnumber", rollNumber);
+                        assignment.put("submitteddate", getCurrentTimestamp());
                         assignment.put("uri", uri.toString());
-                        assignment.put("timestamp", Timestamp.now().toString());
-                        assignment.put("uuid", UUID.randomUUID().toString());
+                        assignment.put("assignmentid",uuid);
                         Log.v("Astro", "Fields Uploading.....!!!!!!!");
-                        db.collection("assignments")
+                        Log.v("Astro", "Branch: "+branch);
+                        Log.v("Astro", "UUID: "+uuid);
+                        db.collection("submittedassignments")
+                                .document(branch)
+                                .collection(uuid)
                                 .add(assignment)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>()
                                 {
@@ -239,7 +253,7 @@ public class NewAssignmentCreation extends AppCompatActivity
                                     public void onSuccess(DocumentReference documentReference)
                                     {
                                         Log.d("Astro", "Assignment Created Successfully !!");
-                                        Toast.makeText(NewAssignmentCreation.this, "Assignment Created Successfully !!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProjectView.this, "Assignment Created Successfully !!", Toast.LENGTH_SHORT).show();
                                     }
                                 }).addOnFailureListener(new OnFailureListener()
                         {
@@ -247,7 +261,7 @@ public class NewAssignmentCreation extends AppCompatActivity
                             public void onFailure(@NonNull Exception e)
                             {
                                 Log.d("Astro", "Assignment Created Failed !!");
-                                Toast.makeText(NewAssignmentCreation.this, "Assignment Created Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProjectView.this, "Assignment Created Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -265,16 +279,8 @@ public class NewAssignmentCreation extends AppCompatActivity
         });
     }
 
-    private void userSignout()
-    {
-        mAuth.signOut();
-        OpenFirstActivity();
-        Toast.makeText(this, "Signed Out Successfully",Toast.LENGTH_SHORT).show();
-    }
-
-    private void OpenFirstActivity()
-    {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    public static String getCurrentTimestamp() {
+        return new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(Calendar
+                .getInstance().getTime());
     }
 }

@@ -181,6 +181,7 @@ public class RegisterActivity extends AppCompatActivity
         //Uploads user information to Firestore
         Map<String, Object> faculty = new HashMap<>();
         faculty.put("Name", nameString);
+//        faculty.put("Branch",)
 
         db.collection("faculty")
                 .add(faculty)
@@ -204,7 +205,7 @@ public class RegisterActivity extends AppCompatActivity
 
     private void openFirstActivity()
     {
-        Intent intent = new Intent(this, FirstActivity.class);
+        Intent intent = new Intent(this, NewAssignmentCreation.class);
         startActivity(intent);
     }
 

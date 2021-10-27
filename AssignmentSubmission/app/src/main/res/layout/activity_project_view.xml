@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProjectView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/assignmentname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Assignment Name"
+            android:padding="35dp"
+            android:textSize="40dp" />
+        <TextView
+            android:id="@+id/subjectname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subject Name"
+            android:paddingLeft="30dp"
+            android:textSize="30dp"
+            android:padding="25dp"/>
+        <TextView
+            android:id="@+id/enddate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:paddingLeft="30dp"
+            android:textSize="30dp"
+            android:padding="25dp"/>
+
+        <Button
+            android:id="@+id/pdfbutton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="View PDF"
+            android:padding="20dp" />
+
+        <Button
+            android:id="@+id/answerspdfbutton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Select PDF"
+            android:padding="20dp" />
+
+        <TextView
+            android:id="@+id/filename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="File Name"
+            android:paddingLeft="30dp"
+            android:textSize="14dp"
+            android:padding="20dp"
+            android:textAlignment="center"/>
+
+        <Button
+            android:id="@+id/submitbutton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:padding="20dp" />
+
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

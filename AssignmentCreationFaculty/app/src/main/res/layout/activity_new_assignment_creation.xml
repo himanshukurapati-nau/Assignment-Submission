@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/backicon" />
+            android:src="@drawable/backicon"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/submitbutton"
