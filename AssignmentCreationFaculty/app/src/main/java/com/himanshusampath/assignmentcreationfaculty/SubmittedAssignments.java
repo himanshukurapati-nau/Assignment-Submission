@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -29,6 +31,7 @@ public class SubmittedAssignments extends AppCompatActivity
     String branch;
     String assignmentId;
 
+    ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +46,17 @@ public class SubmittedAssignments extends AppCompatActivity
     private void AssignUIElements()
     {
         recyclerView = findViewById(R.id.recview);
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OpenAssignmentPending();
+            }
+        });
+
         GetVariables();
     }
 
@@ -100,7 +114,7 @@ public class SubmittedAssignments extends AppCompatActivity
 //        TextView subjectName, assignmentName, endDate;
         String uri;
         TextView name,rollnumber,date,answers,status;
-        Button pdfbutton;
+        ImageButton pdfbutton;
 
         public ProductsViewHolder(@NonNull View itemView)
         {
@@ -167,6 +181,13 @@ public class SubmittedAssignments extends AppCompatActivity
         intent.putExtra("pdfurl",uri);
         startActivity(intent);
 
+    }
+
+    private void OpenAssignmentPending()
+    {
+        Intent intent = new Intent(this, AssignmentsPending.class);
+        startActivity(intent);
+        finish();
     }
 
 }

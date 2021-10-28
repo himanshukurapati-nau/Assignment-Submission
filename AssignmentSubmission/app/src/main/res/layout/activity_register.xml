@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:background="@drawable/cardsbackground">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Registration"
-        android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textSize="45dp"
         app:layout_constraintBottom_toTopOf="@+id/nameinput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Branch"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/branchdrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +94,7 @@
     <Spinner
         android:id="@+id/branchdrop"
         style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="250dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
 
         android:background="@android:drawable/btn_dropdown"
@@ -102,12 +104,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/branchtext" />
 
-    <Button
+    <ImageButton
         android:id="@+id/submitbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
         android:textSize="20dp"
+        android:background="@null"
+        android:src="@drawable/submit"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

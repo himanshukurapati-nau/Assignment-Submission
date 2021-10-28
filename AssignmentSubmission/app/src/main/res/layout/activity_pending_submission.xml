@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PendingSubmission"
-    android:background="#C9FFEF"
+    android:background="@drawable/cardsbackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,14 +27,6 @@
                 android:padding="15dp"
                 android:src="@drawable/backicon" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="15dp"
-                android:src="@drawable/menubutton" />
-
         </RelativeLayout>
 
 
@@ -43,6 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Pending Submissions"
             android:textSize="30sp"
+            android:textColor="@color/white"
             android:textAllCaps="true"
             android:padding="10dp"/>
 

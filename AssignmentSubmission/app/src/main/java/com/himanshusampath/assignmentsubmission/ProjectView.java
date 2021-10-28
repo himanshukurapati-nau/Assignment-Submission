@@ -19,6 +19,7 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,18 +49,9 @@ import java.util.UUID;
 
 public class ProjectView extends AppCompatActivity
 {
-    TextView assignmentName;
-    TextView subjectName;
-    TextView endDate;
-    TextView fileName;
-    Button pdfButton;
-    Button selectPdfButton;
-    Button submitButton;
-    String pdfUri;
-    String uuid;
-    String branch;
-    String studentName;
-    String rollNumber;
+    TextView assignmentName,subjectName,endDate,fileName;
+    ImageButton pdfButton,selectPdfButton,submitButton;
+    String pdfUri,uuid,branch,studentName,rollNumber;
 
     private static final int STORAGE_PERMISSION_CODE = 101;
     StorageReference storageReference;
@@ -207,7 +199,13 @@ public class ProjectView extends AppCompatActivity
                 public void onClick(View v)
                 {
                     Log.v("Astro", "!!!! Submit Clicked !!!!!!");
-                    uploadPDFFileFirebase(data.getData());
+                    if(data.getData() != null)
+                    {uploadPDFFileFirebase(data.getData());}
+                    else
+                    {
+                        Toast.makeText(ProjectView.this, "Select PDF", Toast.LENGTH_SHORT).show();
+                    }
+                    
                 }
             });
         }
@@ -252,16 +250,16 @@ public class ProjectView extends AppCompatActivity
                                     @Override
                                     public void onSuccess(DocumentReference documentReference)
                                     {
-                                        Log.d("Astro", "Assignment Created Successfully !!");
-                                        Toast.makeText(ProjectView.this, "Assignment Created Successfully !!", Toast.LENGTH_SHORT).show();
+                                        Log.d("Astro", "Assignment Submitted Successfully !!");
+                                        Toast.makeText(ProjectView.this, "Assignment Submitted Successfully !!", Toast.LENGTH_SHORT).show();
                                     }
                                 }).addOnFailureListener(new OnFailureListener()
                         {
                             @Override
                             public void onFailure(@NonNull Exception e)
                             {
-                                Log.d("Astro", "Assignment Created Failed !!");
-                                Toast.makeText(ProjectView.this, "Assignment Created Failed", Toast.LENGTH_SHORT).show();
+                                Log.d("Astro", "Assignment Submission Failed !!");
+                                Toast.makeText(ProjectView.this, "Assignment Submission Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
 

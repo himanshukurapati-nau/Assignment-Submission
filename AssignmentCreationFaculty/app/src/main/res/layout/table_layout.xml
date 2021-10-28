@@ -13,6 +13,7 @@
             android:text="Student Name"
             android:id="@+id/studentname"
             android:textSize="20dp"
+            android:textColor="@color/white"
             android:padding="10dp"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
                 android:id="@+id/rollnumber"
                 android:textSize="20dp"
                 android:padding="10dp"
+                android:textColor="@color/white"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -34,14 +36,18 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true">
 
-            <Button
+            <ImageButton
                 android:id="@+id/pdfbutton"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 android:padding="10dp"
-                android:text="PDF" />
+                android:text="PDF"
+                android:background="@null"
+                android:src="@drawable/pdfbutton"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside" />
 
         <Space
             android:layout_alignParentRight="true"

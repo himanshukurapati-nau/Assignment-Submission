@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity
     private Spinner branchDropdown;
 
     private EditText nameInput, emailInput, rollnumberInput, passwordInput, confirmpasswordInput;
-    private Button submitButton;
+    private ImageButton submitButton;
 
     private FirebaseUser firebase;
     private FirebaseAuth mAuth;

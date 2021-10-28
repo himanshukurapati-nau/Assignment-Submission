@@ -1,5 +1,7 @@
 package com.himanshusampath.assignmentsubmission;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,15 +26,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
-import static android.content.ContentValues.TAG;
-
 public class LoginActivity extends AppCompatActivity
 {
 
     private FirebaseAuth mAuth;
 
     EditText emailInput, passwordInput;
-    Button loginButton;
+    ImageButton loginButton;
     ProgressBar progressBar;
     ConstraintLayout loginUI;
     TextView forgotPassword;
@@ -41,7 +42,8 @@ public class LoginActivity extends AppCompatActivity
     private ConstraintLayout emailui, emailsentui;
     String forgotemailString;
     private EditText forgotemailinput;
-    private Button forgotSubmitbutton, loginAgainButton;
+    private ImageButton forgotSubmitbutton;
+    private ImageButton loginAgainButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -234,6 +236,7 @@ public class LoginActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, PendingSubmission.class);
         startActivity(intent);
+        finish();
     }
 
     private void openForgotPassword()

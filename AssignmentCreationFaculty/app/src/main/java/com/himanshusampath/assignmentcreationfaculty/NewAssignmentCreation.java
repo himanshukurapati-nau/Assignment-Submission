@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class NewAssignmentCreation extends AppCompatActivity
     private static final int STORAGE_PERMISSION_CODE = 101;
 
     private Spinner branchDropdown;
-    Button selectPDFButton;
+    ImageButton selectPDFButton;
     TextView fileNameTextView, submitButton;
     EditText subjectName, assignmentName, endDate;
     ImageView backButton;
@@ -112,7 +113,7 @@ public class NewAssignmentCreation extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                userSignout();
+                OpenFirstActivity();
             }
         });
     }
@@ -265,16 +266,10 @@ public class NewAssignmentCreation extends AppCompatActivity
         });
     }
 
-    private void userSignout()
-    {
-        mAuth.signOut();
-        OpenFirstActivity();
-        Toast.makeText(this, "Signed Out Successfully",Toast.LENGTH_SHORT).show();
-    }
 
     private void OpenFirstActivity()
     {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AssignmentsPending.class);
         startActivity(intent);
     }
 }

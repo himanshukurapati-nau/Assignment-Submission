@@ -13,12 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,7 +40,11 @@ public class AssignmentsPending extends AppCompatActivity implements AdapterView
     RecyclerView recyclerView;
 
     FirebaseFirestore firebaseFirestore;
+    FirebaseAuth mAuth;
     FirestoreRecyclerAdapter adapter;
+    ImageView backButton;
+    
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,12 +57,33 @@ public class AssignmentsPending extends AppCompatActivity implements AdapterView
         branchDropdown.setAdapter(adapter);
         branchDropdown.setOnItemSelectedListener(this);
         branchString = branchDropdown.getSelectedItem().toString();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void AssignUI()
     {
         branchDropdown=findViewById(R.id.branchdrop);
         recyclerView = findViewById(R.id.recview);
+        backButton=findViewById(R.id.backButton);
+        fab=findViewById(R.id.fab);
+
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                userSignout();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OpenNewAssignment();
+            }
+        });
     }
 
     private void getAssignmentList()
@@ -155,6 +184,26 @@ public class AssignmentsPending extends AppCompatActivity implements AdapterView
     {
         super.onStop();
         adapter.stopListening();
+    }
+
+    private void userSignout()
+    {
+        mAuth.signOut();
+        OpenFirstActivity();
+        Toast.makeText(AssignmentsPending.this, "Signed Out Successfully",Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private void OpenFirstActivity()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void OpenNewAssignment()
+    {
+        Intent intent = new Intent(this, NewAssignmentCreation.class);
+        startActivity(intent);
     }
 
 }

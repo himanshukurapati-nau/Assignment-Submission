@@ -7,6 +7,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,8 @@ public class LoginActivity extends AppCompatActivity
 
     EditText emailInput, passwordInput;
     String emailString, passwordString, forgotemailString;
-    Button loginButton, submitButton, loginAgainButton;
+    ImageButton loginButton;
+    ImageButton submitButton, loginAgainButton;
     TextView forgotPassword;
     EditText forgotemailInput;
     ConstraintLayout loginUI, loadingUI, emailUI, emailsentUI;
@@ -258,7 +261,8 @@ public class LoginActivity extends AppCompatActivity
 
     private void openFirstActivity()
     {
-        Intent intent = new Intent(this, NewAssignmentCreation.class);
+        Intent intent = new Intent(this, AssignmentsPending.class);
         startActivity(intent);
+        finish();
     }
 }

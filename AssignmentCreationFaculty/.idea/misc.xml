@@ -3,13 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/backicon.xml" value="0.30092592592592593" />
         <entry key="app/src/main/res/layout/activity_assignments_pending.xml" value="0.16983695652173914" />
         <entry key="app/src/main/res/layout/activity_first.xml" value="0.2125" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.16983695652173914" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.291213768115942" />
-        <entry key="app/src/main/res/layout/activity_new_assignment_creation.xml" value="0.16983695652173914" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_new_assignment_creation.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_pdfviewer.xml" value="0.14336372847011145" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.16983695652173914" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_submitted_assignments.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_view_single.xml" value="0.15896739130434784" />
         <entry key="app/src/main/res/layout/table_layout.xml" value="0.25" />
