@@ -206,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity
 
     private void openFirstActivity()
     {
-        Intent intent = new Intent(this, NewAssignmentCreation.class);
+        Intent intent = new Intent(this, AssignmentsPending.class);
         startActivity(intent);
         finish();
     }
