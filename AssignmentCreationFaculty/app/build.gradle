@@ -49,4 +49,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation "io.grpc:grpc-okhttp:1.32.2"
 }
