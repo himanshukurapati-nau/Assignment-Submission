@@ -48,7 +48,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recview"
             android:layout_width="match_parent"
-            android:layout_height="1000dp"
+            android:layout_height="600dp"
             android:padding="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
